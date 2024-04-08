@@ -1,0 +1,46 @@
+// Problem Statement link : https://www.geeksforgeeks.org/problems/optimal-strategy-for-a-game-1587115620/1
+// Date : 8-4-24
+// Author : Shivam Pal
+
+class Solution{
+    public:
+    
+    long long getmax(int arr[] , int i, int j , vector<vector<long long>> &dp){
+        
+        if(i>j)return 0;
+        
+        if(dp[i][j] != -1)return dp[i][j];
+        
+        long long a = arr[i] + min(getmax(arr, i+2 , j , dp) , getmax(arr,i+1 ,j-1 , dp));
+        long long b = arr[j] + min(getmax(arr, i , j-2 , dp) , getmax(arr,i+1 ,j-1 , dp));
+        
+        return dp[i][j] = max(a,b);
+    }
+    
+    long long maximumAmount(int n, int arr[]){
+        
+        vector<vector<long long>> dp(n , vector<long long >(n,0));
+        // return getmax(arr, 0 , n-1 , dp);
+        
+        for(int i=n-1;i>=0;i--){
+            
+            for(int j=0;j<n;j++){
+                
+                if(i > j){
+                    continue;
+                }
+                
+                long long a = arr[i],b = arr[j];
+                
+                a += min( (i+2<n)?dp[i+2][j]:0 , (i+1<n && j-1>=0)?dp[i+1][j-1]:0);
+                b += min( (j-2>=0)?dp[i][j-2]:0 , (i+1<n && j-1>=0)?dp[i+1][j-1]:0);
+                
+                dp[i][j] = max(a , b);
+            }
+        }
+        
+        
+        return dp[0][n-1];
+        
+    }
+};
