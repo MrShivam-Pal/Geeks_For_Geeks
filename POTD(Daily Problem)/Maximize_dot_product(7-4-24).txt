@@ -1,0 +1,41 @@
+// Problem Statement Link : https://www.geeksforgeeks.org/problems/maximize-dot-product2649/1
+// Date : 7-4-24
+// Auhtor: Shivam Pal
+
+class Solution{
+
+public:
+	
+	int maxdotproduct(int a[] , int b[] , int starta , int startb , vector<vector<int>> dp) {
+	    
+	    if(starta < 0 || startb < 0)return 0;
+	    
+	    if(dp[starta][startb] != -1)return dp[starta][startb];
+	    
+	    int dotproduct = 0;
+	    
+	    for(int i=starta;i>=startb;i--){
+	        
+	        int sum = a[i]*b[startb] + maxdotproduct(a,b,i-1,startb-1 , dp);
+	        dotproduct = max(dotproduct , sum);
+	    }
+	    
+	    return dp[starta][startb] = dotproduct;
+	}
+	
+	int maxDotProduct(int n, int m, int a[], int b[]) 
+	{ 
+	    vector<vector<int>> dp(n+1 , vector<int>(m+1 , 0));
+// 		return maxdotproduct(a,b,n-1,m-1 , dp);
+
+        for(int i=1;i<=m;i++){
+            
+            for(int j=i;j<=i+n-m;j++){
+                dp[j][i] = max(dp[j-1][i] , dp[j-1][i-1] + a[j-1]*b[i-1]);
+            }
+        }
+
+        return dp[n][m];
+	    
+	} 
+};
