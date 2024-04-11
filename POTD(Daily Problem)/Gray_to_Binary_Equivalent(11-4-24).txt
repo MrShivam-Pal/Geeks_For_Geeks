@@ -1,0 +1,29 @@
+// Problem Statement Link : https://www.geeksforgeeks.org/problems/gray-to-binary-equivalent-1587115620/1
+// Date : 11-4-24
+// Author : Shivam Pal
+
+
+class Solution{
+    public:
+    // function to convert a given Gray equivalent n to Binary equivalent.
+    int grayToBinary(int n)
+    {
+        int new_n = n , len = 0 ,  ans = 0 , prev_bit = 0;
+        
+        while(new_n){
+            len++;
+            new_n >>=1;
+        }
+        
+        
+        while(len){
+            
+            if( n & (1<< (len-1)) )prev_bit = prev_bit^1;
+            ans |= (prev_bit << (len-1));
+            len--;
+        }
+        
+        return ans;
+        
+    }
+};
