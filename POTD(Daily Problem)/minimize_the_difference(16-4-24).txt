@@ -1,0 +1,49 @@
+// Problem Statement Link : https://www.geeksforgeeks.org/problems/minimize-the-difference/1
+// Date : 16-4-24
+// Authior : Shivam Pal
+
+class Solution {
+  public:
+    int minimizeDifference(int n, int k, vector<int> &arr) {
+        
+        vector<pair<int,int>> prefixminmax(n) , suffixminmax(n);
+        
+        suffixminmax[n-1] = {arr[n-1]  , arr[n-1]};
+        prefixminmax[0] = {arr[0]  , arr[0]};
+        
+        for(int i=1;i<n;i++){
+            
+            prefixminmax[i] = {min(prefixminmax[i-1].first , arr[i]) , max(prefixminmax[i-1].second , arr[i])};
+            
+            int r = n-i-1;
+            
+            suffixminmax[r] = {min(suffixminmax[r+1].first , arr[r]) , max(suffixminmax[r+1].second , arr[r])};
+        }
+        
+        int ans = INT_MAX;
+        
+        for(int i=0;i<=n-k;i++){
+            
+            int a , b;
+            
+            if( i==0){
+                a = suffixminmax[i+k].first;
+                b = suffixminmax[i+k].second;
+            }
+            else if(i == n-k){
+                a = prefixminmax[i-1].first;
+                b = prefixminmax[i-1].second;
+            }
+            else{
+                a = min(prefixminmax[i-1].first , suffixminmax[i+k].first);
+                b = max(prefixminmax[i-1].second , suffixminmax[i+k].second);
+            }
+            
+            ans = min(ans , b-a);
+        }
+        
+        return ans;
+        
+        
+    }
+};
